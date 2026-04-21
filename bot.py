@@ -1,4 +1,6 @@
 import discord
+from discord.ui import View, Button, Modal, TextInput, Select
+import discord
 from discord.ext import commands
 from discord.ui import View, Modal, TextInput, Select
 import asyncio
@@ -9,6 +11,11 @@ intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
+
+TOKEN = "MTQ5NTk0MjY2MDQyMTMyMDg0NA.GDIw65.WupLaFWEMz4JOLwVJERNtinx4gPnCfQuKiOTOM"  # Certifique-se de definir o TOKEN no .env ou variáveis de ambiente # Certifique-se de definir o TOKEN no .env ou variáveis de ambiente
+
+# guard para não reenviar painel/verify em reconexões
+bot._ready_sent = False
 
 def embed_padrao(descricao, cor=discord.Color.yellow()):
     return discord.Embed(
@@ -26,11 +33,11 @@ def membro_tem_cargo_responsavel(membro: discord.Member, categoria_id: int) -> b
 
 # ----------------- Modais -----------------
 class EditarNomeModal(Modal, title="Editar Nome do Ticket"):
-    novo_nome = TextInput(label="📁ㅤ•ㅤNovo nome do canal", placeholder="ex: ticket-pedropow", max_length=90)
+    novo_nome = TextInput(label="Novo nome do canal", placeholder="ex: 📁ㅤ•ㅤNovo Nome", max_length=90)
     async def on_submit(self, interaction: discord.Interaction):
         nome = self.novo_nome.value.replace(" ", "-").lower()
         await interaction.channel.edit(name=nome)
-        await interaction.response.send_message(f"✅ Nome do ticket alterado para `{nome}`.", ephemeral=True)
+        await interaction.response.send_message(f"✅ Nome do ticket alterado para `📁ㅤ•ㅤ{nome}`.", ephemeral=True)
 
 class ConcluirTicketModal(Modal, title="Finalizar Ticket"):
     resultado = TextInput(label="Resultado do atendimento", style=discord.TextStyle.paragraph, max_length=1000)
@@ -112,16 +119,60 @@ class MotivoModal(Modal):
         canal = await guild.create_text_channel(nome_canal, category=categoria, overwrites=overwrites)
         embed = discord.Embed(
             title=f"Atendimento | Chamado de {self.tipo_ticket.upper()}",
-            description=f"Olá. {user.mention}! Seja muito bem-vindo ao nosso atendimento personalizado.\n\n Estamos felizes em tê-lo aqui e faremos o possível para fornecer a ajuda que você precisa. Em breve, um dos nossos staff estará disponível para atendê-lo.\n\n Responsavel pelo atendimento:\n {cargo.mention}\n\n Assunto do Atendimento:\n `{self.motivo.value}` \n\n Agradecemos desde já pelo seu contato. Caso queira realizar alguma alteração no atendimento, fique à vontade para interagir conosco abaixo:",
+            description=(
+                f"> Olá {user.mention}! Seja muito bem-vindo ao nosso atendimento personalizado.\n\n"
+                f"> Estamos felizes em tê-lo aqui e faremos o possível para fornecer a ajuda que você precisa. "
+                f"Em breve, um dos nossos staff estará disponível para atendê-lo.\n\n"
+                f"> Responsável pelo atendimento:\n"
+                f"> {cargo.mention}\n"
+                f"> ㅤㅤ\n"
+                f"> Assunto do Atendimento:\n"
+                f"> `{self.motivo.value}`\n\n"
+                f"> Agradecemos desde já pelo seu contato. Caso queira realizar alguma alteração no atendimento, "
+                f"fique à vontade para interagir conosco abaixo:"
+            ),
             color=discord.Color.yellow()
-        )    
+        )
+          
 
         embed.set_thumbnail(url="https://media.discordapp.net/attachments/1444735189765849320/1495965745400516708/PRF.png?ex=69e82a2b&is=69e6d8ab&hm=4874fa132517e00dc46de34d3c751c5bd6cf273b072f26d39a2ac2b97f346f6f&=&format=webp&quality=lossless&width=518&height=648")   
 
         embed.set_footer(text="Batalhão PRF Virtual® Todos direitos reservados.", icon_url="https://cdn.discordapp.com/attachments/1496035727241121955/1496048035652964412/PRF.png?ex=69e876ce&is=69e7254e&hm=25aeb6b71ed2c2d673c88a5ca4c44289fc12eea02bee3d36aab09a778ca386dd&")
 
-        await canal.send(content=user.mention, embed=embed, view=TicketView())
-        await interaction.response.send_message(f"✅ Ticket criado: {canal.mention}", ephemeral=True)
+        # botão de ir ao ticket
+        view_botao = View()
+        view_botao.add_item(
+            Button(
+                label="Acessar Ticket",
+                url=canal.jump_url,
+                style=discord.ButtonStyle.link,
+                emoji="<:AMARELO:1495480160319836412>"
+            )
+        )
+
+        # embed bonito
+        embed_ticket = discord.Embed(
+            title="Ticket Criado com Sucesso 🎫",
+            description=(
+                f"Seu ticket foi criado!\n"
+                f"**Clique no botão abaixo** para ir até seu ticket."
+            ),
+            color=discord.Color.yellow()
+        )
+
+        # envia mensagem no canal do ticket
+        await canal.send(
+            content=user.mention,
+            embed=embed,
+            view=TicketView()
+        )
+
+        # resposta pro usuário
+        await interaction.response.send_message(
+            embed=embed_ticket,
+            view=view_botao,
+            ephemeral=True
+        )
 
 
 class TicketConfigSelect(Select):
@@ -201,7 +252,10 @@ class TicketView(View):
             await interaction.response.send_message("❌ Você não tem permissão.", ephemeral=True)
             return
 
-        await interaction.response.send_message("Ticket será fechado em 5 segundos.", "Fechado por " + interaction.user.mention, ephemeral=True)
+        await interaction.response.send_message(
+            f" will be closed in 5 seconds...",
+            ephemeral=True
+        )
         await asyncio.sleep(5)
         await interaction.channel.delete()
 
@@ -229,6 +283,12 @@ class SelectMenu(Select):
             max_values=1,
             options=options
         )
+
+    async def callback(self, interaction: discord.Interaction):
+        tipo = self.values[0]
+
+        # abre o modal com o motivo
+        await interaction.response.send_modal(MotivoModal(tipo))        
 
 class SelectMenuView(View):
     def __init__(self):
@@ -282,4 +342,7 @@ async def on_ready():
     print("📨 Menu enviado com sucesso.")
 
 # ----------------- Run -----------------
-bot.run("MTQ5NTk0MjY2MDQyMTMyMDg0NA.GDIw65.WupLaFWEMz4JOLwVJERNtinx4gPnCfQuKiOTOM")
+if not TOKEN:
+    print("ERRO: TOKEN não definido. Coloque TOKEN no .env ou variáveis de ambiente.")
+else:
+    bot.run(TOKEN)
