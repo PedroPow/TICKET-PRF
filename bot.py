@@ -77,10 +77,7 @@ class ConcluirTicketModal(Modal, title="Finalizar Ticket"):
                     url="https://cdn.discordapp.com/attachments/1444735189765849320/1495965745400516708/PRF.png?ex=69e82a2b&is=69e6d8ab&hm=4874fa132517e00dc46de34d3c751c5bd6cf273b072f26d39a2ac2b97f346f6f&"
                 )
 
-                embed.set_footer(
-                    text="Batalhão PRF Virtual® Todos direitos reservados.",
-                    icon_url="https://cdn.discordapp.com/attachments/1496035727241121955/1496048035652964412/PRF.png"
-                )
+                embed.set_footer(text="Batalhão PRF Virtual® Todos direitos reservados.", icon_url="https://media.discordapp.net/attachments/1444735189765849320/1495965745400516708/PRF.png?ex=69eacd2b&is=69e97bab&hm=ff7effe563624e91fcba390af48b72270d34e95d2cb4f9818bc70e1c7c583326&format=webp&quality=lossless&width=518&height=648&")        
 
                 await membro.send(embed=embed)
                 enviados += 1
@@ -336,7 +333,7 @@ async def on_ready():
 
     embed.set_image(url="https://cdn.discordapp.com/attachments/1444735189765849320/1496699220068012152/FAIXA_TICKET_2.png?ex=69ead545&is=69e983c5&hm=281ce8f06c2b87182c978f7a53515d74c64b663c2adeeab422110474c2812233&")
 
-    embed.set_footer(text="Batalhão PRF Virtual® Todos direitos reservados.", icon_url="https://cdn.discordapp.com/attachments/1496035727241121955/1496048035652964412/PRF.png?ex=69e876ce&is=69e7254e&hm=25aeb6b71ed2c2d673c88a5ca4c44289fc12eea02bee3d36aab09a778ca386dd&")
+    embed.set_footer(text="Batalhão PRF Virtual® Todos direitos reservados.", icon_url="https://media.discordapp.net/attachments/1444735189765849320/1495965745400516708/PRF.png?ex=69eacd2b&is=69e97bab&hm=ff7effe563624e91fcba390af48b72270d34e95d2cb4f9818bc70e1c7c583326&format=webp&quality=lossless&width=518&height=648&")    
 
     await canal.send(embed=embed, view=SelectMenuView())
     print("📨 Menu enviado com sucesso.")
