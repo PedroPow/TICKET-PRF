@@ -1,7 +1,7 @@
 GUILD_ID = 1473794022622363842
 
 # ID do canal onde o bot enviará o Select Menu
-CANAL_ENVIO_MENU_ID = 1496026202090111107 # ⬅️ Substitua pelo canal correto
+CANAL_ENVIO_MENU_ID = 1496026202090111107    # ⬅️ Substitua pelo canal correto
 LOG_CHANNEL_ID = 1495948374824845485    
 
 # Cargos responsáveis por cada tipo de ticket

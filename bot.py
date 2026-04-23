@@ -334,7 +334,7 @@ async def on_ready():
         color=discord.Color.yellow()
     )
 
-    embed.set_image(url="https://cdn.discordapp.com/attachments/1496035727241121955/1496047812125659236/FAIXA_TICKET_2.png?ex=69e87699&is=69e72519&hm=a0ee92dd0e1ae817b3f513c4c23e4b0473a00d1067070ad83259276ade42d94e&")
+    embed.set_image(url="https://cdn.discordapp.com/attachments/1444735189765849320/1496046168491294801/FAIXA_TICKET.png?ex=69ea6f51&is=69e91dd1&hm=6068a162db3ec43ead0e8d27552b176f7f249ae060e1871dd94b8ae584b437cb&")
 
     embed.set_footer(text="Batalhão PRF Virtual® Todos direitos reservados.", icon_url="https://cdn.discordapp.com/attachments/1496035727241121955/1496048035652964412/PRF.png?ex=69e876ce&is=69e7254e&hm=25aeb6b71ed2c2d673c88a5ca4c44289fc12eea02bee3d36aab09a778ca386dd&")
 
