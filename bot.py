@@ -124,7 +124,7 @@ class MotivoModal(Modal):
                 f"> {cargo.mention}\n"
                 f"> ㅤㅤ\n"
                 f"> Assunto do Atendimento:\n"
-                f"> `{self.motivo.value}`\n\n"
+                f"> ´{self.motivo.value}´\n\n"
                 f"> Agradecemos desde já pelo seu contato. Caso queira realizar alguma alteração no atendimento, "
                 f"fique à vontade para interagir conosco abaixo:"
             ),
@@ -250,7 +250,8 @@ class TicketView(View):
             return
 
         await interaction.response.send_message(
-            f" will be closed in 5 seconds...",
+            f"✅ {interaction.user.mention} solicitou o fechamento do ticket!\n\n"
+            f"O ticket será fechado em alguns segundos...",
             ephemeral=True
         )
         await asyncio.sleep(5)
@@ -327,7 +328,7 @@ async def on_ready():
         description="**Escolha uma opção** com base no assunto que você deseja discutir com um membro da equipe através de um ticket:\n\n"
         "> Observação:\n"
         "・Por favor, tenha em mente que cada tipo de ticket é específico para lidar com o assunto selecionado.\n"
-        "・• Evite abrir um ticket sem um motivo válido, pois isso pode resultar em punições.\n",
+        "・Evite abrir um ticket sem um motivo válido, pois isso pode resultar em punições.\n",
         color=discord.Color.yellow()
     )
 
