@@ -119,8 +119,8 @@ class MotivoModal(Modal):
             description=(
                 f"> Olá {user.mention}! Seja muito bem-vindo ao nosso atendimento personalizado.\n\n"
                 f"> Estamos felizes em tê-lo aqui e faremos o possível para fornecer a ajuda que você precisa. "
-                f"Em breve, um dos nossos staff estará disponível para atendê-lo.\n\n"
-                f"> Responsável pelo atendimento:\n"
+                f"Em breve, um dos nossos Policiais estará disponível para atendê-lo.\n\n"
+                f"> Policiais responsáveis pelo atendimento:\n"
                 f"> {cargo.mention}\n"
                 f"> ㅤㅤ\n"
                 f"> Assunto do Atendimento:\n"
@@ -250,7 +250,7 @@ class TicketView(View):
             return
 
         await interaction.response.send_message(
-            f"✅ {interaction.user.mention} solicitou o fechamento do ticket!\n\n"
+            f"✅ {interaction.user.mention} solicitou o fechamento do ticket!\n"
             f"O ticket será fechado em alguns segundos...",
             ephemeral=True
         )
