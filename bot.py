@@ -124,7 +124,7 @@ class MotivoModal(Modal):
                 f"> {cargo.mention}\n"
                 f"> ㅤㅤ\n"
                 f"> Assunto do Atendimento:\n"
-                f"> ´{self.motivo.value}´\n\n"
+                f"> `{self.motivo.value}`\n\n"
                 f"> Agradecemos desde já pelo seu contato. Caso queira realizar alguma alteração no atendimento, "
                 f"fique à vontade para interagir conosco abaixo:"
             ),
